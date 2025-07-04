@@ -1,10 +1,13 @@
 package org.pousadaPoo;
+import org.pousadaPoo.Interfaces.MainInterface;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
-public class Main {
+public class Main implements MainInterface {
     public static void main(String[] args) {
+        Main app = new Main();
         Scanner sc = new Scanner(System.in);
 
         ArrayList<Hospede> hospedes = new ArrayList<>();
@@ -12,21 +15,22 @@ public class Main {
         ArrayList<Reserva> reservas = new ArrayList<>();
         ArrayList<ServicoExtra> servicosExtrasDisponiveis = new ArrayList<>();
 
-        adicionarDadosExemplo(hospedes, quartos, servicosExtrasDisponiveis, reservas);
+        app.AdicionarDadosExemplo(hospedes, quartos, servicosExtrasDisponiveis, reservas);
 
         try {
-            mostrarMenu(hospedes, quartos, reservas, servicosExtrasDisponiveis);
+            app.MostrarMenu(hospedes, quartos, reservas, servicosExtrasDisponiveis);
         } catch (Exception ex) {
             System.out.println("\nErro: " + ex.getMessage());
             System.out.println("\nAperte 'Enter' Para Tentar Novamente.");
             sc.nextLine();
             System.out.print("\033[H\033[2J");
             System.out.flush();
-            mostrarMenu(hospedes, quartos, reservas, servicosExtrasDisponiveis);
+            app.MostrarMenu(hospedes, quartos, reservas, servicosExtrasDisponiveis);
         }
     }
 
-    private static void mostrarMenu(List<Hospede> hospedes, List<Quarto> quartos, List<Reserva> reservas, List<ServicoExtra> servicosExtrasDisponiveis) {
+    @Override
+    public void MostrarMenu(List<Hospede> hospedes, List<Quarto> quartos, List<Reserva> reservas, List<ServicoExtra> servicosExtrasDisponiveis) {
         int opcao = 0;
         Scanner sc = new Scanner(System.in);
 
@@ -59,28 +63,28 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    adicionarHospede(hospedes, sc);
+                    AdicionarHospede(hospedes, sc);
                     break;
                 case 2:
-                    listarHospedes(hospedes);
+                    ListarHospedes(hospedes);
                     break;
                 case 3:
-                    cadastrarQuarto(quartos, sc);
+                    CadastrarQuarto(quartos, sc);
                     break;
                 case 4:
-                    listarQuartos(quartos);
+                    ListarQuartos(quartos);
                     break;
                 case 5:
-                    criarReserva(reservas, hospedes, quartos, servicosExtrasDisponiveis, sc);
+                    CriarReserva(reservas, hospedes, quartos, servicosExtrasDisponiveis, sc);
                     break;
                 case 6:
-                    adicionarServicoExtraReserva(reservas, servicosExtrasDisponiveis, sc);
+                    AdicionarServicoExtraReserva(reservas, servicosExtrasDisponiveis, sc);
                     break;
                 case 7:
-                    listarReservas(reservas);
+                    ListarReservas(reservas);
                     break;
                 case 8:
-                    consultarHospedesPorNome(hospedes, sc);
+                    ConsultarHospedesPorNome(hospedes, sc);
                     break;
                 case 9:
                     System.out.println("Saindo...");
@@ -98,7 +102,8 @@ public class Main {
         } while (opcao != 9);
     }
 
-    private static void adicionarHospede(List<Hospede> hospedes, Scanner sc) {
+    @Override
+    public void AdicionarHospede(List<Hospede> hospedes, Scanner sc) {
         try {
             System.out.print("Nome: ");
             String nome = sc.nextLine().trim();
@@ -127,7 +132,8 @@ public class Main {
         }
     }
 
-    private static void listarHospedes(List<Hospede> hospedes) {
+    @Override
+    public void ListarHospedes(List<Hospede> hospedes) {
         if (hospedes.isEmpty()) {
             System.out.println("Nenhum hóspede cadastrado.");
             return;
@@ -146,7 +152,8 @@ public class Main {
         }
     }
 
-    private static void cadastrarQuarto(List<Quarto> quartos, Scanner sc) {
+    @Override
+    public void CadastrarQuarto(List<Quarto> quartos, Scanner sc) {
         try {
             System.out.print("Número do quarto: ");
             int numero = Integer.parseInt(sc.nextLine());
@@ -175,7 +182,8 @@ public class Main {
         }
     }
 
-    private static void listarQuartos(List<Quarto> quartos) {
+    @Override
+    public void ListarQuartos(List<Quarto> quartos) {
         if (quartos.isEmpty()) {
             System.out.println("Nenhum quarto cadastrado.");
             return;
@@ -194,7 +202,8 @@ public class Main {
         }
     }
 
-    private static void criarReserva(List<Reserva> reservas, List<Hospede> hospedes, List<Quarto> quartos, List<ServicoExtra> servicosExtrasDisponiveis, Scanner sc) {
+    @Override
+    public void CriarReserva(List<Reserva> reservas, List<Hospede> hospedes, List<Quarto> quartos, List<ServicoExtra> servicosExtrasDisponiveis, Scanner sc) {
         try {
             if (hospedes.isEmpty()) {
                 System.out.println("Não há hóspedes cadastrados. Cadastre um hóspede primeiro.");
@@ -283,8 +292,8 @@ public class Main {
         }
     }
 
-
-    private static void adicionarServicoExtraReserva(List<Reserva> reservas, List<ServicoExtra> servicosExtrasDisponiveis, Scanner sc) {
+    @Override
+    public void AdicionarServicoExtraReserva(List<Reserva> reservas, List<ServicoExtra> servicosExtrasDisponiveis, Scanner sc) {
         try {
             if (reservas.isEmpty()) {
                 System.out.println("Não há reservas cadastradas.");
@@ -331,7 +340,8 @@ public class Main {
         }
     }
 
-    private static void listarReservas(List<Reserva> reservas) {
+    @Override
+    public void ListarReservas(List<Reserva> reservas) {
         if (reservas.isEmpty()) {
             System.out.println("Nenhuma reserva cadastrada.");
             return;
@@ -361,7 +371,8 @@ public class Main {
         }
     }
 
-    private static void consultarHospedesPorNome(List<Hospede> hospedes, Scanner sc) {
+    @Override
+    public void ConsultarHospedesPorNome(List<Hospede> hospedes, Scanner sc) {
         System.out.print("Digite o nome (ou parte dele) do hóspede para busca: ");
         String busca = sc.nextLine().toLowerCase().trim();
 
@@ -382,7 +393,8 @@ public class Main {
         }
     }
 
-    private static void adicionarDadosExemplo(List<Hospede> hospedes, List<Quarto> quartos, List<ServicoExtra> servicosExtras, List<Reserva> reservas) {
+    @Override
+    public void AdicionarDadosExemplo(List<Hospede> hospedes, List<Quarto> quartos, List<ServicoExtra> servicosExtras, List<Reserva> reservas) {
         hospedes.add(new Hospede("Ana Silva", "123.456.789-00", "1199999-9999", "Rua das Flores, 123"));
         hospedes.add(new Hospede("Bruno Costa", "987.654.321-00", "1198888-8888", "Av. Paulista, 456"));
         hospedes.add(new Hospede("Carlos Lima", "111.222.333-44", "1197777-7777", "Rua do Sol, 789"));
